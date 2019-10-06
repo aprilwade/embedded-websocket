@@ -11,7 +11,7 @@
 
 #![no_std]
 
-use byteorder::{BigEndian, ByteOrder, LittleEndian};
+use byteorder::{BigEndian, ByteOrder};
 use core::{cmp, result, str};
 use heapless::consts::*; // these are for constants like U4, U16, U24, U32
 use heapless::{String, Vec};
@@ -732,7 +732,7 @@ where
             }
             to_buffer[0] = byte1;
             to_buffer[1] = mask_bit_set_as_byte | 126;
-            LittleEndian::write_u16(&mut to_buffer[2..], count as u16);
+            BigEndian::write_u16(&mut to_buffer[2..], count as u16);
             header_size = SHORT_HEADER_SIZE;
         } else {
             if payload_len + LONG_HEADER_SIZE > to_buffer.len() {
@@ -740,7 +740,7 @@ where
             }
             to_buffer[0] = byte1;
             to_buffer[1] = mask_bit_set_as_byte | 127;
-            LittleEndian::write_u64(&mut to_buffer[2..], count as u64);
+            BigEndian::write_u64(&mut to_buffer[2..], count as u64);
             header_size = LONG_HEADER_SIZE;
         }
 
